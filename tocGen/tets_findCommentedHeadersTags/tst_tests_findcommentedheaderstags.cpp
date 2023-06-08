@@ -18,6 +18,7 @@ private slots:
     void noCommentedHeadersTags();
     void commentedHeaderOpenTagWithoutContent();
     void commentedHeaderCloseTagWithoutContent();
+    void complexTest();
 };
 
 void tests_findCommentedHeadersTags::commentedOpeningHeaderTagWithoutClosingTag()
@@ -174,6 +175,23 @@ void tests_findCommentedHeadersTags::commentedHeaderCloseTagWithoutContent()
     QMap<int, TagType> commentedHeaderTagsInfo;
     QMap<int, TagType> expectedCommentedHeaderTagsInfo;
     expectedCommentedHeaderTagsInfo.insert(39, CLOSE_TAG);
+
+    findCommentedHeadersTags(htmlCode, commentedHeaderTagsInfo);
+
+    QCOMPARE(commentedHeaderTagsInfo, expectedCommentedHeaderTagsInfo);
+}
+
+void tests_findCommentedHeadersTags::complexTest()
+{
+    QString htmlCode = "<!--<h1>-->First Header</h1><h2>Second Header<!--</h2>--><!--<h3>-->Third Header<!--</h3>--><!--<h4>Four Header</h4>-->";
+    QMap<int, TagType> commentedHeaderTagsInfo;
+    QMap<int, TagType> expectedCommentedHeaderTagsInfo;
+    expectedCommentedHeaderTagsInfo.insert(5, OPEN_TAG);
+    expectedCommentedHeaderTagsInfo.insert(54, CLOSE_TAG);
+    expectedCommentedHeaderTagsInfo.insert(62, OPEN_TAG);
+    expectedCommentedHeaderTagsInfo.insert(89, CLOSE_TAG);
+    expectedCommentedHeaderTagsInfo.insert(97, OPEN_TAG);
+    expectedCommentedHeaderTagsInfo.insert(116, CLOSE_TAG);
 
     findCommentedHeadersTags(htmlCode, commentedHeaderTagsInfo);
 
