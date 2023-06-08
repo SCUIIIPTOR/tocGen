@@ -22,4 +22,27 @@ enum TagType
     UNKNOWN_TAG = 2
 };
 
+/*!
+* \brief Структура для хранения информации об найденном теге заголовка
+* \param startPos - начальная позиция тега в HTML-коде
+* \param endPos - конечная позиция тега в HTML-коде
+* \param level - уровень тега
+* \param type - тип тега
+*/
+struct HeaderTag
+{
+    int startPos;
+    int endPos;
+    int level;
+    TagType type;
 
+    //! Оператор перегрузки '==', для сравнения двух HeaderTag (используется при тестировании)
+    bool operator == (const HeaderTag& other) const
+    {
+        return
+            startPos == other.startPos &&
+            endPos == other.endPos &&
+            level == other.level &&
+            type == other.type;
+    }
+};
