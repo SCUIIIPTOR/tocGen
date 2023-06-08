@@ -107,7 +107,7 @@ void findUncommentedHeadersTags(const QString& htmlCode, const QMap<int, TagType
         // Если найденный тег - закрывающий и незакомментированный...
         if(match.captured().startsWith("</h") && !commentedHeaderTagsInfo.contains(match.capturedEnd()))
         {
-            // Сохранить информацию о найденном теге в контейнер headerTagsInfo
+            // Сохранить найденный тег с информацией о нем в контейнер headersTags
             tag.startPos = match.capturedStart() + 1;
             tag.endPos = match.capturedEnd();
             tag.level = match.captured(2).toInt();
@@ -118,7 +118,7 @@ void findUncommentedHeadersTags(const QString& htmlCode, const QMap<int, TagType
         // Если найденный тег - открывающий и незакомментированный...
         if(match.captured().startsWith("<h") && !commentedHeaderTagsInfo.contains(match.capturedStart() + 1))
         {
-            // Сохранить информацию о найденном теге в контейнер headerTagsInfo
+            // Сохранить найденный тег с информацией о нем в контейнер headersTags
             tag.startPos = match.capturedStart() + 1;
             tag.endPos = match.capturedEnd();
             tag.level = match.captured(1).toInt();
