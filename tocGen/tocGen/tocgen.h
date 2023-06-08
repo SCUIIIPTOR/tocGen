@@ -76,3 +76,10 @@ struct Header
 */
 void uploadDataFromFile (const int argsCounter, char* inputArgs[], QString& fileData);
 
+/*!
+* \brief Найти h заголовки (информацию) в HTML-коде
+* \param[in] htmlCode - HTML-код страницы, хранящийся в виде строки
+* \param[in,out] headersInfo - контейнер с найденными заголовками
+* \throw выбрасывает исключения в случае возникновения ошибки
+*/
+void findHeaders(const QString& htmlCode, QList<Header>& headersInfo);
