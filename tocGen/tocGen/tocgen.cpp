@@ -1,5 +1,8 @@
 #include "tocgen.h"
 
+QRegularExpression headerTags("(?<!<)<h([1-6])[^>]*>(?!>)|(?<!<)</h([1-6])[^>]*>(?!>)");
+QRegularExpression comments("<!--\\s*(.*?)\\s*-->");
+
 void uploadDataFromFile (const int argsCounter, char* inputArgs[], QString& fileData)
 {
     // Если с запуском программы был передан один аргумент...

@@ -10,9 +10,6 @@
 #include <stdio.h>
 using namespace std;
 
-static QRegularExpression headerTags("(?<!<)<h([1-6])[^>]*>(?!>)|(?<!<)</h([1-6])[^>]*>(?!>)");
-static QRegularExpression comments("<!--\\s*(.*?)\\s*-->");
-
 /*!
 * \brief Перечисление типов тега в HTML-коде
 */
