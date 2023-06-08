@@ -90,3 +90,11 @@ void findHeaders(const QString& htmlCode, QList<Header>& headersInfo);
 * \param[in,out] commentedHeaderTagsInfo - контейнер с позицией закомментированного тега и его типа
 */
 void findCommentedHeadersTags(const QString& htmlCode, QMap<int, TagType>& commentedHeaderTagsInfo);
+
+/*!
+* \brief Найти незакомментированые теги h заголовков в HTML-коде
+* \param[in] htmlCode - HTML-код страницы
+* \param[in] commentedHeaderTagsInfo - контейнер с позициями закомментированных тегов заголовков и их типов
+* \param[in,out] headerTagsInfo - контейнер с незакомментироваными тегами заголовков
+*/
+void findUncommentedHeadersTags(const QString& htmlCode, const QMap<int, TagType>& commentedHeaderTagsInfo,  QList<HeaderTag>& headerTagsInfo);
