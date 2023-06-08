@@ -5,6 +5,7 @@
 
 #include <QCoreApplication>
 #include <QFile>
+#include <QFileInfo>
 #include <QRegularExpression>
 #include <stdio.h>
 using namespace std;
