@@ -46,3 +46,22 @@ struct HeaderTag
             type == other.type;
     }
 };
+
+/*!
+* \brief Структура для хранения информации об найденном заголовке
+* \param level - уровень заголовка
+* \param content - содержимое заголовка
+*/
+struct Header
+{
+    int level;
+    QString content;
+
+    //! Оператор перегрузки '==', для сравнения двух Header (используется при тестировании)
+    bool operator == (const Header& other) const
+    {
+        return
+            level == other.level &&
+            content == other.content;
+    }
+};
