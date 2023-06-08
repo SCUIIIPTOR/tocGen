@@ -85,3 +85,42 @@ void findCommentedHeadersTags(const QString& htmlCode, QMap<int, TagType>& comme
         }
     }
 }
+
+void findUncommentedHeadersTags(const QString& htmlCode, const QMap<int, TagType>& commentedHeaderTagsInfo,  QList<HeaderTag>& headersTags)
+{
+    // Найти все открывающие h заголовки теги
+    QRegularExpressionMatchIterator matchIterator;
+    QRegularExpressionMatch match;
+    HeaderTag tag;
+
+    // Найти все теги заголовков в HTML-коде
+    matchIterator = headerTags.globalMatch(htmlCode);
+
+    // Для каждого найденного тега...
+    while (matchIterator.hasNext())
+    {
+        match = matchIterator.next();
+
+        // Если найденный тег - закрывающий и незакомментированный...
+        if(match.captured().startsWith("</h") && !commentedHeaderTagsInfo.contains(match.capturedEnd()))
+        {
+            // Сохранить информацию о найденном теге в контейнер headerTagsInfo
+            tag.startPos = match.capturedStart() + 1;
+            tag.endPos = match.capturedEnd();
+            tag.level = match.captured(2).toInt();
+            tag.type = CLOSE_TAG;
+            headersTags.append(tag);
+        }
+
+        // Если найденный тег - открывающий и незакомментированный...
+        if(match.captured().startsWith("<h") && !commentedHeaderTagsInfo.contains(match.capturedStart() + 1))
+        {
+            // Сохранить информацию о найденном теге в контейнер headerTagsInfo
+            tag.startPos = match.capturedStart() + 1;
+            tag.endPos = match.capturedEnd();
+            tag.level = match.captured(1).toInt();
+            tag.type = OPEN_TAG;
+            headersTags.append(tag);
+        }
+    }
+}
