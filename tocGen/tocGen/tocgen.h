@@ -65,3 +65,13 @@ struct Header
             content == other.content;
     }
 };
+
+/*!
+* \brief Выгрузить содержимое файла
+* \param[in] argsCounter - количество аргументов, переданных с запуском программы
+* \param[in] inputArgs - аргументы, переданные с запуском программы
+* \param[in,out] fileData - строка с содержимым файла
+* \throw выбрасывает исключения в случае возникновения ошибки
+*/
+void uploadDataFromFile (const int argsCounter, char* inputArgs[], QString& fileData);
+
