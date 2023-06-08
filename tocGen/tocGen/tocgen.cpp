@@ -49,3 +49,39 @@ void uploadDataFromFile (const int argsCounter, char* inputArgs[], QString& file
     // Закрыть доступ к файлу
     file.close();
 }
+
+void findCommentedHeadersTags(const QString& htmlCode, QMap<int, TagType>& commentedHeaderTagsInfo)
+{
+    QRegularExpressionMatchIterator firstMatchIterator;
+    QRegularExpressionMatchIterator secondMatchIterator;
+    QRegularExpressionMatch firstMatch;
+    QRegularExpressionMatch secondMatch;
+
+    // Найти все комментарии в HTML-коде
+    firstMatchIterator = comments.globalMatch(htmlCode);
+
+    // Для каждого найденного комментария...
+    while (firstMatchIterator.hasNext())
+    {
+        firstMatch = firstMatchIterator.next();
+
+        // Найти в текущем комментарии все теги заголовков...
+        secondMatchIterator = headerTags.globalMatch(firstMatch.captured());
+
+        // Для каждого найденного тега...
+        while (secondMatchIterator.hasNext())
+        {
+            secondMatch = secondMatchIterator.next();
+
+            // Сохранить позицию и тип найденного тега в контейнер commentedHeaderTagsInfo
+            if(secondMatch.captured().contains("</h"))
+            {
+                commentedHeaderTagsInfo.insert(firstMatch.capturedStart() + secondMatch.capturedEnd(), CLOSE_TAG);
+            }
+            else
+            {
+                commentedHeaderTagsInfo.insert(firstMatch.capturedStart() + 1 + secondMatch.capturedStart(), OPEN_TAG);
+            }
+        }
+    }
+}
