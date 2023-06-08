@@ -87,7 +87,7 @@ void findHeaders(const QString& htmlCode, QList<Header>& headersInfo);
 /*!
 * \brief Найти закомментированые теги h заголовков в HTML-коде
 * \param[in] htmlCode - HTML-код страницы
-* \param[in,out] commentedHeaderTagsInfo - контейнер с позицией закомментированного тега и его типа
+* \param[in,out] commentedHeaderTagsInfo - контейнер с позициями закомментированных тегов заголовков и их типов
 */
 void findCommentedHeadersTags(const QString& htmlCode, QMap<int, TagType>& commentedHeaderTagsInfo);
 
