@@ -6,6 +6,7 @@ SUBDIRS += \
     tests_findHeaders \
     tests_findHeadersInfo \
     tests_findUncommentedHeadersTags \
+    tests_generateTableOfContents \
     tests_uploadDataFromFile \
     tets_findCommentedHeadersTags \
     tocGen
