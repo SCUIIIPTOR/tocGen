@@ -95,3 +95,10 @@ void findCommentedHeadersTags(const QString& htmlCode, QMap<int, TagType>& comme
 * \param[in,out] headerTagsInfo - контейнер с незакомментироваными тегами заголовков
 */
 void findUncommentedHeadersTags(const QString& htmlCode, const QMap<int, TagType>& commentedHeaderTagsInfo,  QList<HeaderTag>& headerTagsInfo);
+
+/*!
+* \brief Найти пропущенные теги среди найденных
+* \param[in] headerTagsInfo - контейнер с незакомментироваными тегами заголовков
+* \throw выбрасывает исключения в случае возникновения ошибки
+*/
+void checkMissingTags(const QList<HeaderTag>& headerTagsInfo);
