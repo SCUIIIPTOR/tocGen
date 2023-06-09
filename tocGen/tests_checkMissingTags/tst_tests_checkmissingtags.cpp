@@ -16,6 +16,7 @@ private slots:
     void missedOpeningTagForNestedHeaderWithDifferentLevels();
     void missedClosingTagForHeaderAndCorrectHeader();
     void missedOpeningTagForHeaderAndCorrectHeader();
+    void commentedHeaderAndCorrectHeaderOnDifferentLines();
 };
 
 void tests_checkMissingTags::noMissingTagsForHeader()
@@ -175,6 +176,22 @@ void tests_checkMissingTags::missedOpeningTagForHeaderAndCorrectHeader()
     catch (QString exception)
     {
         QCOMPARE(exception, "Для тега, который начинается на позиции '10', отсутствует открывающий тег");
+    }
+}
+
+void tests_checkMissingTags::commentedHeaderAndCorrectHeaderOnDifferentLines()
+{
+    // <h1>\nHeader\n<!--<h1>\nHeader\ncommented\n</h1>-->\n</h1>\n</h1>
+
+    QList<HeaderTag> headerTagsInfo = {{1,4,1,OPEN_TAG}, {48,52,1,CLOSE_TAG}, {54,58,1,CLOSE_TAG}};
+
+    try
+    {
+        checkMissingTags(headerTagsInfo);
+    }
+    catch (QString exception)
+    {
+        QCOMPARE(exception, "Для тега, который начинается на позиции '54', отсутствует открывающий тег");
     }
 }
 
