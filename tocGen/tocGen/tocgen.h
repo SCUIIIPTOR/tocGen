@@ -109,3 +109,11 @@ void checkMissingTags(const QList<HeaderTag>& headerTagsInfo);
 * \throw выбрасывает исключения в случае возникновения ошибки
 */
 void checkHeadersForNesting(const QList<HeaderTag>& headerTagsInfo);
+
+/*!
+* \brief Найти вложенные в друг друга заголовки
+* \param[in] htmlCode - HTML-код страницы с корректными заголовками (отсутствуют вложенные заголовки и не пропущен ни один тег для заголовков)
+* \param[in] headerTagsInfo - контейнер с незакомментироваными тегами заголовков
+* \param[in,out] headers - контейнер с найденными заголовками и информацией о них
+*/
+void findHeadersInfo(const QString& htmlCode, const QList<HeaderTag>& headerTagsInfo, QList<Header>& headers);
