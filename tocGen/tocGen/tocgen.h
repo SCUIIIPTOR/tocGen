@@ -124,3 +124,10 @@ void findHeadersInfo(const QString& htmlCode, const QList<HeaderTag>& headerTags
 * \param[in,out] tableOfContents - строка с созданным оглавлением
 */
 void generateTableOfContents(const QList<Header>& headers, QString& tableOfContents);
+
+/*!
+* \brief Сохранить данные в файл
+* \param[in] data - сохраняемые данные
+* \throw выбрасывает исключения в случае возникновения ошибки
+*/
+void saveDataToFile(const QString& data);
