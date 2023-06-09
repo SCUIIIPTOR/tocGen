@@ -130,6 +130,8 @@ void findUncommentedHeadersTags(const QString& htmlCode, const QMap<int, TagType
 
 void checkMissingTags(const QList<HeaderTag>& headerTagsInfo)
 {
+    HeaderTag nextTag;
+
     // Считать, что пара тегов не найдена
     bool isPairFound = false;
 
@@ -181,19 +183,21 @@ void checkMissingTags(const QList<HeaderTag>& headerTagsInfo)
                     }
                 }
 
-                // Если тег из первого цикла - закрывающийся...
-                if(firstTag.type == CLOSE_TAG)
-                {
-                    // Выкинуть ошибку: "Для тега, который начинается на позиции '*', отсутствует открывающий тег"
-                    throw QString("Для тега, который начинается на позиции '" + QString::number(firstTag.startPos) + "', отсутствует открывающий тег");
-                }
+                nextTag = secondTag;
+            }
 
-                // Если тег из первого цикла - открывающийся и во втором цикле были рассмотрены все теги из контейнера с найденными тегами...
-                if(firstTag.type == OPEN_TAG && headerTagsInfoCopy.last() == secondTag)
-                {
-                    // Выкинуть ошибку: "Для тега, который начинается на позиции '*', отсутствует закрывающий тег"
-                    throw QString("Для тега, который начинается на позиции '" + QString::number(firstTag.startPos) + "', отсутствует закрывающий тег");
-                }
+            // Если тег из первого цикла - закрывающийся...
+            if(firstTag.type == CLOSE_TAG)
+            {
+                // Выкинуть ошибку: "Для тега, который начинается на позиции '*', отсутствует открывающий тег"
+                throw QString("Для тега, который начинается на позиции '" + QString::number(firstTag.startPos) + "', отсутствует открывающий тег");
+            }
+
+            // Если тег из первого цикла - открывающийся и во втором цикле были рассмотрены все теги из контейнера с найденными тегами...
+            if(firstTag.type == OPEN_TAG && headerTagsInfoCopy.last() == nextTag)
+            {
+                // Выкинуть ошибку: "Для тега, который начинается на позиции '*', отсутствует закрывающий тег"
+                throw QString("Для тега, который начинается на позиции '" + QString::number(firstTag.startPos) + "', отсутствует закрывающий тег");
             }
         }
     }
