@@ -104,8 +104,8 @@ void findUncommentedHeadersTags(const QString& htmlCode, const QMap<int, TagType
 void checkMissingTags(const QList<HeaderTag>& headerTagsInfo);
 
 /*!
-* \brief Найти вложенные в друг друга заголовки
-* \param[in] headerTagsInfo - контейнер с незакомментироваными тегами заголовков (все заголовки - корректные)
+* \brief Проверить заголовки на вложенность
+* \param[in] headerTagsInfo - контейнер с незакомментироваными тегами заголовков
 * \throw выбрасывает исключения в случае возникновения ошибки
 */
 void checkHeadersForNesting(const QList<HeaderTag>& headerTagsInfo);
