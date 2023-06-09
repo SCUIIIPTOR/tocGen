@@ -318,3 +318,23 @@ void generateTableOfContents(const QList<Header>& headers, QString& tableOfConte
 
     qDebug() << "generateTOC: \n" << tableOfContents;
 }
+
+void saveDataToFile(const QString& data)
+{
+    QString outputPath = "./result.html";
+    QFile outputFile(outputPath);
+
+    // Если доступ к файлу 'result.html' отсутствует...
+    if(!outputFile.open(QIODevice::WriteOnly | QIODevice::Truncate))
+    {
+        // Выбросить ошибку: "Отсутствует доступ к файлу 'result.html', по пути '*'"
+        throw QString("Отсутствует доступ к файлу 'result.html', по пути '" + outputFile.fileName() + "'");
+    }
+
+    // Сохранить данные в файл
+    QTextStream out(&outputFile);
+    out << data;
+
+    // Закрыть доступ к файлу
+    outputFile.close();
+}
