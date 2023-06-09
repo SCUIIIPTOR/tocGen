@@ -198,3 +198,39 @@ void checkMissingTags(const QList<HeaderTag>& headerTagsInfo)
         }
     }
 }
+
+void checkHeadersForNesting(const QList<HeaderTag>& headerTagsInfo)
+{
+    HeaderTag prevTag = {-1, -1, -1, UNKNOWN_TAG};
+
+    // Считать, что счетчик открывающих h заголовки тегов обнулен
+    int openTagsCounter = 0;
+
+    // Для каждого тега из контейнера с найденными тегами...
+    for(const HeaderTag& currentTag : headerTagsInfo)
+    {
+        // Если текущий тег - открывающий...
+        if(currentTag.type == OPEN_TAG)
+        {
+            // Инкрементировать значение счетчика openTagsCounter
+            openTagsCounter++;
+        }
+
+        // Если текущий тег - закрывающий, предыдущий тег - открывающий и уровень текущего тега совпадает с уровнем предыдущего тега...
+        if(currentTag.type == CLOSE_TAG  && currentTag.level == prevTag.level && prevTag.type == OPEN_TAG)
+        {
+            // Декрементировать значение счетчика openTagsCounter
+            openTagsCounter--;
+        }
+
+        // Если значение счетчика открывающих тегов два и более...
+        if(openTagsCounter >= 2)
+        {
+            // Выкинуть ошибку: "В заголовке, который начинается с позиции '*' имеется вложенный заголовок"
+            throw QString("В заголовке, который начинается с позиции '" + QString::number(prevTag.startPos) + "' имеется вложенный заголовок");
+        }
+
+        // Запомнить текущий тег в качестве предыдущего
+        prevTag = currentTag;
+    }
+}
