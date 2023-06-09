@@ -234,3 +234,23 @@ void checkHeadersForNesting(const QList<HeaderTag>& headerTagsInfo)
         prevTag = currentTag;
     }
 }
+
+void findHeadersInfo(const QString& htmlCode, const QList<HeaderTag>& headerTagsInfo, QList<Header>& headers)
+{
+    int startPos;
+    int length;
+    Header header;
+
+    for (QList<HeaderTag>::const_iterator currentTag = headerTagsInfo.begin(); currentTag != headerTagsInfo.end(); ++currentTag)
+    {
+        if(currentTag->type == OPEN_TAG)
+        {
+            header.level = currentTag->level;
+            startPos = currentTag->endPos;
+            currentTag += 1;
+            length = currentTag->startPos - startPos - 1;
+            header.content = htmlCode.mid(startPos, length);
+            headers.append(header);
+        }
+    }
+}
