@@ -119,7 +119,7 @@ void checkHeadersForNesting(const QList<HeaderTag>& headerTagsInfo);
 void findHeadersInfo(const QString& htmlCode, const QList<HeaderTag>& headerTagsInfo, QList<Header>& headers);
 
 /*!
-* \brief Найти вложенные в друг друга заголовки
+* \brief Сгенерировать оглавление HTML-страницы с учетом вложенности заголовков
 * \param[in] headers - контейнер с незакомментированными заголовками (и информацией о них)
 * \param[in,out] tableOfContents - строка с созданным оглавлением
 */
