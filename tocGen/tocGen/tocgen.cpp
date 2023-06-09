@@ -127,3 +127,74 @@ void findUncommentedHeadersTags(const QString& htmlCode, const QMap<int, TagType
         }
     }
 }
+
+void checkMissingTags(const QList<HeaderTag>& headerTagsInfo)
+{
+    // Считать, что пара тегов не найдена
+    bool isPairFound = false;
+
+    // Создать копию контейнера headerTagsInfo
+    QList<HeaderTag> headerTagsInfoCopy = headerTagsInfo;
+
+    // Если в контейнере с найденными тегами содержится только один тег и этот тег закрывающий...
+    if(headerTagsInfoCopy.count() == 1 && headerTagsInfoCopy.at(0).type == CLOSE_TAG)
+    {
+            // Выкинуть ошибку: "Для тега, который начинается на позиции '*', отсутствует открывающий тег"
+            throw QString("Для тега, который начинается на позиции '" + QString::number(headerTagsInfoCopy.at(0).startPos) + "', отсутствует открывающий тег");
+    }
+
+    // Если в контейнере с найденными тегами содержится только один тег и этот тег открывающий...
+    if(headerTagsInfoCopy.count() == 1 && headerTagsInfoCopy.at(0).type == OPEN_TAG)
+    {
+            // Выкинуть ошибку: "Для тега, который начинается на позиции '*', отсутствует закрывающий тег"
+            throw QString("Для тега, который начинается на позиции '" + QString::number(headerTagsInfoCopy.at(0).startPos) + "', отсутствует закрывающий тег");
+    }
+
+    // Для каждого тега из контейнера с найденными тегами начиная с первого (первый цикл)...
+    for(QList<HeaderTag>::iterator firstIterator = headerTagsInfoCopy.begin(); firstIterator != headerTagsInfoCopy.end(); ++firstIterator)
+    {
+        HeaderTag& firstTag = *firstIterator;
+
+        // Считать, что пара тегов не найдена
+        isPairFound = false;
+
+        // Если тег из первого цикла еще не обработан
+        if(firstTag.type != UNKNOWN_TAG)
+        {
+            // Для каждого тега из контейнера с найденными тегами, которые следуют после тега из первого цикла, и пока пара тегов не была найдена (второй цикл)...
+            for(QList<HeaderTag>::iterator secondIterator = firstIterator + 1; secondIterator != headerTagsInfoCopy.end() && isPairFound != true; ++secondIterator)
+            {
+                HeaderTag& secondTag = *secondIterator;
+
+                // Если тег из первого цикла - открывающийся...
+                if(firstTag.type == OPEN_TAG)
+                {
+                    // Если тег из второго цикла - закрывающийся и его уровень совпадает с уровнем тега из первого цикла...
+                    if(secondTag.type == CLOSE_TAG && firstTag.level == secondTag.level)
+                    {
+                        // Считать тег из первого цикла и из второго - обработанными
+                        firstTag.type = UNKNOWN_TAG;
+                        secondTag.type = UNKNOWN_TAG;
+
+                        // Считать, что пара тегов была найдена
+                        isPairFound = true;
+                    }
+                }
+
+                // Если тег из первого цикла - закрывающийся...
+                if(firstTag.type == CLOSE_TAG)
+                {
+                    // Выкинуть ошибку: "Для тега, который начинается на позиции '*', отсутствует открывающий тег"
+                    throw QString("Для тега, который начинается на позиции '" + QString::number(firstTag.startPos) + "', отсутствует открывающий тег");
+                }
+
+                // Если тег из первого цикла - открывающийся и во втором цикле были рассмотрены все теги из контейнера с найденными тегами...
+                if(firstTag.type == OPEN_TAG && headerTagsInfoCopy.last() == secondTag)
+                {
+                    // Выкинуть ошибку: "Для тега, который начинается на позиции '*', отсутствует закрывающий тег"
+                    throw QString("Для тега, который начинается на позиции '" + QString::number(firstTag.startPos) + "', отсутствует закрывающий тег");
+                }
+            }
+        }
+    }
+}
