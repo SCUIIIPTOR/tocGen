@@ -315,8 +315,6 @@ void generateTableOfContents(const QList<Header>& headers, QString& tableOfConte
         // Добавить закрывающий список тег в оглавление
         tableOfContents.append("</ul>\n");
     }
-
-    qDebug() << "generateTOC: \n" << tableOfContents;
 }
 
 void saveDataToFile(const QString& data)
