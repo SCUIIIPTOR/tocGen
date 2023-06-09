@@ -1,2 +1,6 @@
-*.idx
 build-tocGen-Desktop_Qt_6_2_4_MSVC2019_64bit-Debug/
+build-tocGen-Desktop_Qt_6_2_4_MinGW_64_bit-Debug/
+build-tocGen-Desktop_Qt_6_2_4_MSVC2019_64bit-Release/
+tocGen/tocGen.pro.user
+tocGen/msvc_make.bat
+TESTS/main/bat_tests/result.html
