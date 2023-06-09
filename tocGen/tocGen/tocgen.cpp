@@ -1,7 +1,7 @@
 #include "tocgen.h"
 
 QRegularExpression headerTags("(?<!<)<h([1-6])[^>]*>(?!>)|(?<!<)</h([1-6])[^>]*>(?!>)");
-QRegularExpression comments("<!--\\s*(.*?)\\s*-->");
+QRegularExpression comments("<!--\\s*(.*?)\\s*-->", QRegularExpression::DotMatchesEverythingOption);
 
 void uploadDataFromFile (const int argsCounter, char* inputArgs[], QString& fileData)
 {
