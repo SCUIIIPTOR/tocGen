@@ -17,6 +17,8 @@ private slots:
     void noCommentedTagsWithNestedHeader();
     void noCommentedTagsWithoutNestedHeader();
     void commentedTagsWithDifferentsLevels();
+    void commentedTagsOnDifferentLines();
+    void uncommentedTagsOnDifferentLines();
 };
 
 void tests_findUncommentedHeadersTags::commentedCloseHeaderTag()
@@ -133,6 +135,30 @@ void tests_findUncommentedHeadersTags::commentedTagsWithDifferentsLevels()
     QMap<int, TagType> commentedHeaderTagsInfo = {{5, OPEN_TAG}, {44, CLOSE_TAG}, {53, OPEN_TAG}, {93, CLOSE_TAG}, {102, OPEN_TAG}, {134, CLOSE_TAG}};
     QList<HeaderTag> headerTagsInfo;
     QList<HeaderTag> expectedHeaderTagsInfo = {};
+
+    findUncommentedHeadersTags(htmlCode, commentedHeaderTagsInfo, headerTagsInfo);
+
+    QCOMPARE(headerTagsInfo, expectedHeaderTagsInfo);
+}
+
+void tests_findUncommentedHeadersTags::commentedTagsOnDifferentLines()
+{
+    QString htmlCode = "<!--<h1>-->\n<h1>\nThis is my first header!\n<!--</h1>-->";
+    QMap<int, TagType> commentedHeaderTagsInfo = {{5, OPEN_TAG}, {51, CLOSE_TAG}};
+    QList<HeaderTag> headerTagsInfo;
+    QList<HeaderTag> expectedHeaderTagsInfo = {{13, 16, 1, OPEN_TAG}};
+
+    findUncommentedHeadersTags(htmlCode, commentedHeaderTagsInfo, headerTagsInfo);
+
+    QCOMPARE(headerTagsInfo, expectedHeaderTagsInfo);
+}
+
+void tests_findUncommentedHeadersTags::uncommentedTagsOnDifferentLines()
+{
+    QString htmlCode = "<h1>\nThis is my first header!\n</h1>";
+    QMap<int, TagType> commentedHeaderTagsInfo = {};
+    QList<HeaderTag> headerTagsInfo;
+    QList<HeaderTag> expectedHeaderTagsInfo = {{1, 4, 1, OPEN_TAG}, {31, 35, 1, CLOSE_TAG}};
 
     findUncommentedHeadersTags(htmlCode, commentedHeaderTagsInfo, headerTagsInfo);
 
