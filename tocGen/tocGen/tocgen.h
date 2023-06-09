@@ -76,10 +76,10 @@ void uploadDataFromFile (const int argsCounter, char* inputArgs[], QString& file
 /*!
 * \brief Найти h заголовки в HTML-коде
 * \param[in] htmlCode - HTML-код страницы, хранящийся в виде строки
-* \param[in,out] headersInfo - контейнер с найденными заголовками
+* \param[in,out] headers - контейнер с найденными заголовками
 * \throw выбрасывает исключения в случае возникновения ошибки
 */
-void findHeaders(const QString& htmlCode, QList<Header>& headersInfo);
+void findHeaders(const QString& htmlCode, QList<Header>& headers);
 
 /*!
 * \brief Найти закомментированые теги h заголовков в HTML-коде
