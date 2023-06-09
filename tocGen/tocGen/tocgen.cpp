@@ -254,3 +254,31 @@ void findHeadersInfo(const QString& htmlCode, const QList<HeaderTag>& headerTags
         }
     }
 }
+
+void findHeaders(const QString& htmlCode, QList<Header>& headers)
+{
+    QList<HeaderTag> headerTagsInfo;
+    QMap<int, TagType> commentedHeaderTagsInfo;
+
+    // Найти все закомментированные теги заголовков в HTML-коде...
+    findCommentedHeadersTags(htmlCode, commentedHeaderTagsInfo);
+
+    // Найти все незакомментированные теги заголовков в HTML-коде...
+    findUncommentedHeadersTags(htmlCode, commentedHeaderTagsInfo, headerTagsInfo);
+
+    // Если в HTML-коде отсутствуют незакомментированные теги заголовков...
+    if(headerTagsInfo.isEmpty())
+    {
+        // Выкинуть ошибку: "В HTML-коде отсутствуют незакомментированные теги, объявляющие h заголовки"
+        throw QString("В HTML-коде отсутствуют незакомментированные теги, объявляющие h заголовки");
+    }
+
+    // Проверить, не отсутствует ли какой-либо тег открытия/закрытия для найденных незакомментированных тегов заголовков...
+    checkMissingTags(headerTagsInfo);
+
+    // Проверить найденные незакомментированные теги заголовков на вложенность...
+    checkHeadersForNesting(headerTagsInfo);
+
+    // Узнать содержимое незакомментированных заголовков...
+    findHeadersInfo(htmlCode, headerTagsInfo, headers);
+}
