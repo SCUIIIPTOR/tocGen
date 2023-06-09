@@ -282,3 +282,39 @@ void findHeaders(const QString& htmlCode, QList<Header>& headers)
     // Узнать содержимое незакомментированных заголовков...
     findHeadersInfo(htmlCode, headerTagsInfo, headers);
 }
+
+void generateTableOfContents(const QList<Header>& headers, QString& tableOfContents)
+{
+    // Считать, что уровень предыдущего заголовка неизвестен
+    int prevHeaderLvl = 0;
+
+    // Для всех найденных незакомментированных h заголовков...
+    for (QList<Header>::const_iterator currentHeader = headers.begin(); currentHeader != headers.end(); ++currentHeader)
+    {
+        // До тех пор, пока уровень текущего заголовка больше, чем уровень предыдущего заголовка...
+        for(; prevHeaderLvl < currentHeader->level; prevHeaderLvl++)
+        {
+            // Добавить открывающий список тег в оглавление
+            tableOfContents.append("<ul>\n");
+        }
+
+        // До тех пор, пока уровень текущего заголовка меньше, чем уровень предыдущего заголовка...
+        for(; prevHeaderLvl > currentHeader->level; prevHeaderLvl--)
+        {
+            // Добавить закрывающий список тег в оглавление
+            tableOfContents.append("</ul>\n");
+        }
+
+        // Добавить содержимое текущего заголовка в оглавление
+        tableOfContents.append("<li>" + currentHeader->content.simplified() + "</li>\n");
+    }
+
+    // До тех пор, пока имеются незакрытые списки...
+    for(; prevHeaderLvl > 0; prevHeaderLvl--)
+    {
+        // Добавить закрывающий список тег в оглавление
+        tableOfContents.append("</ul>\n");
+    }
+
+    qDebug() << "generateTOC: \n" << tableOfContents;
+}
