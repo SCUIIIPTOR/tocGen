@@ -73,7 +73,7 @@ void findCommentedHeadersTags(const QString& htmlCode, QMap<int, TagType>& comme
     {
         firstMatch = firstMatchIterator.next();
 
-        // Найти в текущем комментарии все теги заголовков...
+        // Найти в текущем комментарии все теги заголовков
         secondMatchIterator = headerTags.globalMatch(firstMatch.captured());
 
         // Для каждого найденного тега...
@@ -96,7 +96,6 @@ void findCommentedHeadersTags(const QString& htmlCode, QMap<int, TagType>& comme
 
 void findUncommentedHeadersTags(const QString& htmlCode, const QMap<int, TagType>& commentedHeaderTagsInfo,  QList<HeaderTag>& headersTags)
 {
-    // Найти все открывающие h заголовки теги
     QRegularExpressionMatchIterator matchIterator;
     QRegularExpressionMatch match;
     HeaderTag tag;
@@ -109,7 +108,7 @@ void findUncommentedHeadersTags(const QString& htmlCode, const QMap<int, TagType
     {
         match = matchIterator.next();
 
-        // Если найденный тег - закрывающий и незакомментированный...
+        // Если найденный тег - закрывающий и не закомментированный...
         if(match.captured().startsWith("</h") && !commentedHeaderTagsInfo.contains(match.capturedEnd()))
         {
             // Сохранить найденный тег с информацией о нем в контейнер headersTags
@@ -120,7 +119,7 @@ void findUncommentedHeadersTags(const QString& htmlCode, const QMap<int, TagType
             headersTags.append(tag);
         }
 
-        // Если найденный тег - открывающий и незакомментированный...
+        // Если найденный тег - открывающий и не закомментированный...
         if(match.captured().startsWith("<h") && !commentedHeaderTagsInfo.contains(match.capturedStart() + 1))
         {
             // Сохранить найденный тег с информацией о нем в контейнер headersTags
@@ -165,7 +164,7 @@ void checkMissingTags(const QList<HeaderTag>& headerTagsInfo)
         // Считать, что пара тегов не найдена
         isPairFound = false;
 
-        // Если тег из первого цикла еще не обработан
+        // Если тег из первого цикла еще не обработан...
         if(firstTag.type != UNKNOWN_TAG)
         {
             // Для каждого тега из контейнера с найденными тегами, которые следуют после тега из первого цикла, и пока пара тегов не была найдена (второй цикл)...
@@ -187,7 +186,7 @@ void checkMissingTags(const QList<HeaderTag>& headerTagsInfo)
                         isPairFound = true;
                     }
                 }
-
+                // Запомнить текущий тег в качестве предыдущего
                 nextTag = secondTag;
             }
 
@@ -250,10 +249,13 @@ void findHeadersInfo(const QString& htmlCode, const QList<HeaderTag>& headerTags
     int length;
     Header header;
 
+    // Для каждого тега из контейнера headerTagsInfo...
     for (QList<HeaderTag>::const_iterator currentTag = headerTagsInfo.begin(); currentTag != headerTagsInfo.end(); ++currentTag)
     {
+        // Если текущий тег - открывающий...
         if(currentTag->type == OPEN_TAG)
         {
+            // Сохранить уровень и содержимое заголовка в контейнер headers
             header.level = currentTag->level;
             startPos = currentTag->endPos;
             currentTag += 1;
