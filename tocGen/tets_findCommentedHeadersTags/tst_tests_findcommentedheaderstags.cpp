@@ -18,6 +18,8 @@ private slots:
     void noCommentedHeadersTags();
     void commentedHeaderOpenTagWithoutContent();
     void commentedHeaderCloseTagWithoutContent();
+    void commentedTagsOnDifferentLines();
+    void uncommentedTagsOnDifferentLines();
     void complexTest();
 };
 
@@ -175,6 +177,30 @@ void tests_findCommentedHeadersTags::commentedHeaderCloseTagWithoutContent()
     QMap<int, TagType> commentedHeaderTagsInfo;
     QMap<int, TagType> expectedCommentedHeaderTagsInfo;
     expectedCommentedHeaderTagsInfo.insert(39, CLOSE_TAG);
+
+    findCommentedHeadersTags(htmlCode, commentedHeaderTagsInfo);
+
+    QCOMPARE(commentedHeaderTagsInfo, expectedCommentedHeaderTagsInfo);
+}
+
+void tests_findCommentedHeadersTags::commentedTagsOnDifferentLines()
+{
+    QString htmlCode = "<!--<h1>-->\nHeader without closing tag\n<!--</h1>-->";
+    QMap<int, TagType> commentedHeaderTagsInfo;
+    QMap<int, TagType> expectedCommentedHeaderTagsInfo;
+    expectedCommentedHeaderTagsInfo.insert(5, OPEN_TAG);
+    expectedCommentedHeaderTagsInfo.insert(48, CLOSE_TAG);
+
+    findCommentedHeadersTags(htmlCode, commentedHeaderTagsInfo);
+
+    QCOMPARE(commentedHeaderTagsInfo, expectedCommentedHeaderTagsInfo);
+}
+
+void tests_findCommentedHeadersTags::uncommentedTagsOnDifferentLines()
+{
+    QString htmlCode = "<h1>\nHeader without closing tag\n</h1>";
+    QMap<int, TagType> commentedHeaderTagsInfo;
+    QMap<int, TagType> expectedCommentedHeaderTagsInfo = {};
 
     findCommentedHeadersTags(htmlCode, commentedHeaderTagsInfo);
 
