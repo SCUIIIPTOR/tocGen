@@ -117,3 +117,10 @@ void checkHeadersForNesting(const QList<HeaderTag>& headerTagsInfo);
 * \param[in,out] headers - контейнер с найденными заголовками и информацией о них
 */
 void findHeadersInfo(const QString& htmlCode, const QList<HeaderTag>& headerTagsInfo, QList<Header>& headers);
+
+/*!
+* \brief Найти вложенные в друг друга заголовки
+* \param[in] headers - контейнер с незакомментированными заголовками (и информацией о них)
+* \param[in,out] tableOfContents - строка с созданным оглавлением
+*/
+void generateTableOfContents(const QList<Header>& headers, QString& tableOfContents);
