@@ -111,7 +111,7 @@ void checkMissingTags(const QList<HeaderTag>& headerTagsInfo);
 void checkHeadersForNesting(const QList<HeaderTag>& headerTagsInfo);
 
 /*!
-* \brief Найти вложенные в друг друга заголовки
+* \brief Найти информацию о незакомментированных заголовках
 * \param[in] htmlCode - HTML-код страницы с корректными заголовками (отсутствуют вложенные заголовки и не пропущен ни один тег для заголовков)
 * \param[in] headerTagsInfo - контейнер с незакомментироваными тегами заголовков
 * \param[in,out] headers - контейнер с найденными заголовками и информацией о них
